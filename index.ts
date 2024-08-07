@@ -22,7 +22,7 @@ const input: Altitudes = [
  * @param point {Point}
  * @returns {Point[]}
  */
-const getSurroundingPoints = (alitudes: Altitudes, point: Point) => { 
+const getSurroundingPoints = (alitudes: Altitudes, point: Point) : Point[] => { 
   const surroundingPoints: Point[] = [];
   const [x, y] = point; 
 
@@ -108,20 +108,24 @@ const findBasanGivenPoint = (alitudes: Altitudes, point: Point, previousPoints: 
        }
 }
 
-const run = (alitudes: Altitudes) => {  
+const run = (alitudes: Altitudes) : void => {  
   const waterFlows: Basin[] = [];
   let nestedArr;
 
   console.log('Running...');
+
   console.log('-------------------');
   console.log('Topograph-ish Matrix');
   console.log('-------------------');
   alitudes.forEach((nestedArr, i) => {
     console.log(nestedArr);
-  }); 
+  });  
+ 
+ 
   console.log('-------------------');
-
-  // looping each array
+  console.log('Water Flows');
+  console.log('-------------------');
+  // Calculate Water Flows
   for(let i = 0; i < input.length; i++) {
     nestedArr = input[i];
     
@@ -133,20 +137,20 @@ const run = (alitudes: Altitudes) => {
       }
     } 
   }
- 
-  console.log('Water Flows');
-  console.log('-------------------');
+
+  // Pretty Print Summaries
   console.log(waterFlows.map((watershed: Basin) => {
     return {
       basinCoords: watershed.basin,
       originCoords: watershed.points[0],
       waterflowCoords: watershed.points.map((point: Point) => { return `(${point[0]},${point[1]})`; }),
     } 
-}));
-  console.log('-------------------');
+  }));
 
-  
- 
+
+  console.log('-------------------');
+  console.log('Basins');
+  console.log('-------------------'); 
   // Figure out unique basins and points involved in waterflow
   const basins = waterFlows.reduce((accumulator: Basin[], currentValue) => {
     // Check if the basin is already in the accumulator
@@ -169,9 +173,8 @@ const run = (alitudes: Altitudes) => {
 
     return accumulator;
   }, []); 
- 
-  console.log('Basins');
-  console.log('-------------------');
+  
+  // Pretty print basins
   console.log(basins.map((watershed: Basin) => {
     return {
       basinCoords: watershed.basin,
